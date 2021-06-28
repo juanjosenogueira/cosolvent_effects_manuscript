@@ -1,0 +1,79 @@
+% !TeX root = ../../manuscript.tex
+\section{Computational Details}
+
+The SARS-CoV-2 RdRp protein complex was chosen as the target of our investigations. In its active form it is composed of three domains: nonstructural proteins 7, 8 and 12 of SARS-CoV-2. Its active site is located in a deep groove and is highly similar to that of the analogous protein of the SARS-CoV \cite{covid_proteins}. Its simulation ready structure was obtained from the website of D. E. Shaw Research \cite{deshaw}, where extensive MD simulations have already been carried out for it. In Reference \citenum{rdrp}, the authors note that two zinc ions are necessary for the structural integrity of the protein. These ions were however not found in the structures and trajectories downloaded from D. E. Shaw Research.
+After numerous failed attempts at stabilising these zinc ions in their bound positions with restraining potentials and gradual heating, their inclusion was rejected in favor of the original D. E. Shaw structure. Additionally, two crystal structures determined with cryo-electron microscopy were downloaded from the Protein Data Bank website: the apo structure 6M71 \cite{6m71} and the holo structure 7B3B \cite{7b3b}. Out of these two crystallised structures, only the apo structure was utilised for docking calculations, to emulate drug discovery VS campaigns where the holo structure of the target is not available. The holo structure was used only to visualise the conformational changes around the active site occurring during ligand binding as will be explained below. 
+
+%%% Include references
+%%% Force field used
+
+The MD calculations were carried out with the Amber 18 program package \cite{amber18}, according to the following protocol.
+Three types of solvent boxes were prepared for the simulations: a simple water one and two with either benzene or phenol as cosolvent.
+The protein structures were solvated in octahedral solvent boxes containing the appropriate mixture of water and cosolvent molecules.
+A distance of at least 12 \AA{} was left between the protein and all sides of the solvent box. The charge of the system was neutralised with sodium ions. During the simulations, periodic boundary conditions and a 12 \AA{} cutoff for the Lennard--Jones interactions were used. The solvated systems were first minimised for 1000 gradient descent steps followed by an other 1000 conjugate gradient steps. Next, the heating of the systems to 300 K were performed during a 1 ns simulation with the Langevin thermostat in the NVT ensemble. Finally, 200 ns production simulations were carried out at 300 K and 1 bar pressure using the Langevin thermostat and Berendsen barostat in the NPT ensemble. Three replicas were run for the production calculation for each solvent. The last two simulations for each solvent were started from a random equilibrated frame of the first simulation for that solvent, with the velocities of all particles randomised according to the Boltzmann-distribution.
+The production calculations were run with GPU acceleration, using the \texttt{pmemd} program of Amber 18.
+
+During the preparation of the solvent boxes containing cosolvents the \texttt{packmol} program was utilised \cite{packmol}. The concentration of the cosolvents were set to 10 v/v \% in both cases.
+In the case of the benzene cosolvent severe clustering of the cosolvent molecules was observed during the MD simulations when the default force field parameters were used. To circumvent this issue, scripts included in the \texttt{ParmEd} distribution \cite{parmed} were utilised to introduce Lennard--Jones potentials between the carbon atoms of different benzene molecules.
+
+\newglossaryentry{lj}{name={LJ},description={Lennard–Jones (potential)}}
+The exact form of this artificial potential between carbon atoms $i$ and $j$ is:
+\begin{equation}
+V_{ij} = \gamma \left[\left(\frac{R_{\mathrm{min}}}{r_{ij}}\right)^{12} - 2 \left(\frac{R_{\mathrm{min}}}{r_{ij}}\right)^{6}\right] \, .
+\end{equation}
+Here, $V_{ij}$ is the introduced \gls{lj} potential, $\gamma$ is the parameter determining the minimum value of the potential, $R_{\mathrm{min}}$ is the parameter controlling the position of the minimum, while $r_{ij}$ is the distance between carbon atoms $i$ and $j$.
+The default parameter values of $\gamma$ = 0.00036 kcal/mol and $R_{\mathrm{min}}$ = 7.12719 \AA{} were utilised.
+After this modification was made, no clustering of the benzene molecules was observed during the simulations.
+%}}}
+
+%{{{ subsection: Trajectory clustering
+\subsection{Trajectory clustering}\label{sec:comp_details:clustering}
+\newglossaryentry{md}{name={MD},description={molecular dynamics}}
+\newglossaryentry{rmsd}{name={RMSD},description={root-mean-square deviation}}
+For the clustering of the \gls{md} trajectories the \texttt{cpptraj} program \cite{cpptraj} of Amber 18 was utilised.
+A density based clustering algorithm (chosen with the \texttt{dbscan} keyword of \texttt{cpptraj}) was employed, with the parameters $k$ (unitless) and $\varepsilon$ (in \aa{}ngstr\"oms) set to 4 and 1.1 \AA{} respectively (see Section \ref{sec:results_clustering} for the discussion of this choice).
+For each type of solvent the equilibrated part of the trajectories of the three replica simulations were concatenated and the clustering was carried out separately for each solvent.
+Before clustering, the structures in every frame were aligned to each other by their alpha carbon atoms.
+The clustering was performed using the \gls{rmsd} values of the alpha carbon atoms as the distance metric between the conformations.
+A total of 19 cluster representatives were obtained with 13 coming from the trajectory with water as the solvent while the benzene and phenol cosolvent trajectories yielded 3 cluster representatives each.
+%}}}
+
+%{{{ Docking calculations
+\subsection{Docking calculations}\label{sec:results:comp_details:docking}
+The set of FDA approved drugs were downloaded from the ZINC database \cite{zinc} in the \texttt{mol2} format.
+This set is a popular choice for drug repurposing studies \cite{ml_inhibitors,rdrp_virtual_screening2,rdrp_virtual_screening3} and with approximately 2000 thousand contained ligands, it was feasible to perform docking calculations for all protein conformation, ligand pairs.
+From this set, 1957 ligand structures were converted to the \texttt{pdb} format, necessary for docking with AutoDock Vina, with the \texttt{openbabel} program \cite{openbabel}.
+The 19 cluster representative protein structures along with the holo crystal structure were aligned to each other by the \gls{rmsd} distances between their alpha carbons.
+The protein and ligand structures were prepared for docking, relying on the scripts included in the AutoDockTools4 distribution \cite{autodocktools}.
+The same docking region was used for all docking calculations, which encompassed the whole protein structure and was generated by AutoDockTools4.
+To carry out the docking calculations, AutoDock Vina was run with the default command line options, except for the \texttt{exhaustiveness} option which was increased to 24, as is suggested by the authors for large docking regions and the \texttt{num\_modes} option which was set to twenty to obtain the twenty best poses for each ligand.
+The parallel execution of the docking calculations were managed with in-house scripts.
+%}}}
+
+%{{{ subsection: Ligand similarity calculations
+\subsection{Ligand similarity calculations}
+Based on the results of the docking calculations the best ligands binding to each discovered pocket were selected.
+Afterwards, similarity calculations were performed between all selected ligands.
+These calculations employed the RDKit program package \cite{rdkit}, using its default RDKit small molecule fingerprint and the Tanimoto similarity score \cite{tanimoto}.
+%}}}
+
+%{{{ subsection: Pocket description
+\subsection{Pocket description}\label{sec:results:comp_details:pocket_description}
+The binding sites of the protein, discovered through computational docking calculations, were analysed with the \texttt{mdpocket} program \cite{mdpocket}, part of the \texttt{fpocket} distribution.
+To this end, the 19 cluster representative protein structures were aligned to each other by their alpha carbons and concatenated to create a mock trajectory readable by \texttt{mdpocket}.
+The regions of space which the discovered binding pockets occupy were selected manually, by inspecting the poses of the ligands binding to the pocket in question.
+Based on the suggestions of the \texttt{mdpocket} authors, large regions were selected for each pocket, encompassing all or almost all docked ligand poses.
+With the protein structures concatenated and the binding regions selected, \texttt{mdpocket} was run with the \texttt{-S} option, instructing the program to score pockets by their druggability.
+Among its results \texttt{mdpocket} provides a number of pocket descriptors calculated for each frame of the supplied trajectory.
+From these descriptors, the pocket volume and various pocket druggability scores are utilised in the present study.
+To qualitatively evaluate the general druggability of a given pocket, a simple composite druggability score is defined here, that can be calculated from the descriptors provided by \texttt{mdpocket} as:
+\begin{equation}
+S = S_H + S_V + S_P + S_C  \, .
+\label{eqn:pocket_score}
+\end{equation}
+Here, $S_H$, $S_V$, $S_P$ and $S_C$ are the hydrophobicity, volume, polarity and charge scores calculated by \texttt{mdpocket} respectively.
+It is emphasised that the definition of $S$ is not suggested by the \texttt{mdpocket} developers and it is not intended as an absolute metric of pocket quality, but rather as a qualitative means to compare the druggability of the same pocket in different protein conformations.
+For more information about the calculation and meaning of the pocket descriptors utilised for $S$, see the \texttt{mdpocket} documentation or Reference \citenum{mdpocket}.
+%}}}
+
+%}}}
