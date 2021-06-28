@@ -61,6 +61,7 @@ def initapplications():
 	apps.nomenclature = App('makeindex', '{basename}.nlo -s nomencl.ist -o {basename}.nls', verbose)
 	apps.pdfviewer    = App('acroread',  '{pdffile}', verbose)
 	apps.remove       = App('rm',        '-f {cleanfiles}', verbose)
+	#  apps.remove       = App('echo',        '{cleanfiles}', verbose)
 
 	if sys.platform == 'darwin':
 		## Mac OS X ##
@@ -95,6 +96,8 @@ settings.chapters = [name.replace(".tex", "") for name in glob.glob('chapters/**
 settings.cleanfiles = " ".join([base+ext for ext in settings.cleanext for base in [settings.basename]+settings.chapters])
 settings.cleanfiles = settings.cleanfiles + " " + " ".join(["coverpage/coverpage"+ext for ext in settings.cleanext])
 settings.cleanfiles = settings.cleanfiles + " acs-manuscript.bib"
+#  for ext in settings.cleanext:
+    #  settings.cleanfiles = settings.cleanfiles + " " + " ".join([name for name in glob.glob(f'sections/**/images/**/to_pdf/*.{ext}')])
 settings.pdffile = settings.basename+'.pdf'
 
 apps = create('pdflatex', 'bibtex', 'biber', 'glossary', 'nomenclature', 'pdfviewer', 'remove')
@@ -174,9 +177,9 @@ def latex():
 
 @target()
 def clean():
-	"""Remove the auxiliary files created by Latex."""
-	global apps
-	apps.remove.run(settings, 'Removing auxiliary files failed')
+    """Remove the auxiliary files created by Latex."""
+    global apps
+    apps.remove.run(settings, 'Removing auxiliary files failed')
 
 
 @target()
