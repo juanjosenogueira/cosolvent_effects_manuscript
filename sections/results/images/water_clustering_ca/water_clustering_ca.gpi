@@ -62,7 +62,7 @@ set yrange [0:100]
 set ylabel '\small Noise [\%]' offset 6,0
 
 set arrow 2 from 1.125,45 to 1.105,11 lw 6 lc 0
-set label 2 at 1.09,60 '\shortstack{\small\textcolor{black}{92 noise frames} \\ \small with \textcolor{juliablue}{k=4}}'
+set label 2 at 1.09,60 '\shortstack{\small\textcolor{black}{$<$2 \% noise frames} \\ \small with \textcolor{juliablue}{k=4}}'
 
 p 'water-CA.dat' u 2:($1==7?($7/5500)*100:NaN) w lp lw 5 pt 11 ps 1.2 lc rgb "#FF0080" t "", \
   'water-CA.dat' u 2:($1==6?($7/5500)*100:NaN) w lp lw 5 pt 2  ps 1.0 lc rgb "#3EA44D" t "", \

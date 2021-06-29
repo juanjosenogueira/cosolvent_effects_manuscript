@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.6.7)  29 JUN 2021 16:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.6.7)  29 JUN 2021 17:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**water_clustering_ca_to_pdf.tex
-(./water_clustering_ca_to_pdf.tex
+**clusterrep_distances_to_pdf.tex
+(./clusterrep_distances_to_pdf.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18>
 (/usr/share/texmf-dist/tex/latex/standalone/standalone.cls
@@ -100,8 +100,8 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count190
 \l__pdf_internal_box=\box48
 )
-(./water_clustering_ca_to_pdf.aux)
-\openout1 = `water_clustering_ca_to_pdf.aux'.
+(./clusterrep_distances_to_pdf.aux)
+\openout1 = `clusterrep_distances_to_pdf.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
@@ -140,48 +140,38 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-(../water_clustering_ca.tex
+(../clusterrep_distances.tex
 \gptboxheight=\skip49
 \gptboxwidth=\skip50
 \gptboxtext=\box50
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 146.
+(Font)              <7> on input line 114.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 146.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 146.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 146.
-<../water_clustering_ca.pdf, id=1, 440.64626pt x 255.95625pt>
-File: ../water_clustering_ca.pdf Graphic file (type pdf)
-<use ../water_clustering_ca.pdf>
-Package pdftex.def Info: ../water_clustering_ca.pdf  used on input line 147.
+(Font)              <5> on input line 114.
+<../clusterrep_distances.pdf, id=1, 440.64626pt x 255.95625pt>
+File: ../clusterrep_distances.pdf Graphic file (type pdf)
+<use ../clusterrep_distances.pdf>
+Package pdftex.def Info: ../clusterrep_distances.pdf  used on input line 115.
 (pdftex.def)             Requested size: 440.96118pt x 256.07277pt.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 148.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 148.
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../water_clustering_ca.pdf
->] (./water_clustering_ca_to_pdf.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../clusterrep_distances.pd
+f>] (./clusterrep_distances_to_pdf.aux) ) 
 Here is how much of TeX's memory you used:
- 2196 strings out of 478994
- 32258 string characters out of 5864752
- 330819 words of memory out of 5000000
- 19681 multiletter control sequences out of 15000+600000
- 407078 words of font info for 39 fonts, out of 8000000 for 9000
+ 2171 strings out of 478994
+ 32017 string characters out of 5864752
+ 326821 words of memory out of 5000000
+ 19666 multiletter control sequences out of 15000+600000
+ 403729 words of font info for 28 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,10n,74p,224b,297s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></us
-r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on water_clustering_ca_to_pdf.pdf (1 page, 53789 bytes).
+ 68i,10n,74p,225b,297s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr9.pfb>
+Output written on clusterrep_distances_to_pdf.pdf (1 page, 30462 bytes).
 PDF statistics:
- 30 PDF objects out of 1000 (max. 8388607)
- 20 compressed objects within 1 object stream
+ 18 PDF objects out of 1000 (max. 8388607)
+ 11 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

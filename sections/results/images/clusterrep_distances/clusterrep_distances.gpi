@@ -1,0 +1,32 @@
+#!/usr/bin/gnuplot
+
+set term epslatex size 15.5cm,9cm color 
+set output 'clusterrep_distances.tex'
+set key
+# set lmargin 2.5
+
+set xrange [0.5:6]
+set xlabel 'RMSD [\AA{}]' offset 0,0,0
+set yrange [0:0.6]
+set ytics ('$0$' 0, '$1$' 0.6)
+
+set ylabel 'Occurance frequency [arb. units]' offset 1,0,0
+
+set obj 1 rect from 0.66,0.415 to 2.17,0.51 lw 2
+set label 1 at 0.84,0.455 front '\shortstack{\small \color{black} smaller intrasolvent \\ \small \color{black} distances}'
+
+set style rect fs empty
+set obj 2 rect from 4.46,0.170 to 5.85,0.271 lw 2 dt 2
+set label 2 at 4.62,0.212 front '\shortstack{\small larger intersolvent \\ \small distances}'
+
+p 'water_gaussians.dat' u 1:2 w l lw 6 lc rgb '#009BFA' t '\small water--water', \
+  'benzene_gaussians.dat' u 1:2 w l lw 6 lc rgb '#E26E46' t '\small benzene--benzene', \
+  'phenol_gaussians.dat' u 1:2 w l lw 6 lc rgb '#3EA44D' t '\small phenol--phenol', \
+  'water-benzene_gaussians.dat' u 1:2 w l lw 6 dt 2 lc rgb '#EED202' t '\small water--benzene', \
+  'water-phenol_gaussians.dat' u 1:2 w l lw 6 dt 2 lc rgb '#FF0080' t '\small water--phenol', \
+  'benzene-phenol_gaussians.dat' u 1:2 w l lw 6 dt 2 lc rgb '#954535' t '\small benzene--phenol', \
+
+set output
+!sed -i 's|{clusterrep_distances}|{../clusterrep_distances}|' clusterrep_distances.tex
+!epstopdf clusterrep_distances.eps --outfile='clusterrep_distances.pdf'
+!rm -f clusterrep_distances.eps

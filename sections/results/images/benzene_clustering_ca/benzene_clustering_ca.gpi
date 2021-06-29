@@ -1,0 +1,104 @@
+#!/usr/bin/gnuplot
+
+set terminal epslatex size 15.50cm,9.0cm color
+set output 'benzene_clustering_ca.tex'
+
+# set key spacing 0.5
+
+set datafile missing "NaN"
+
+set lmargin 1.5
+set tmargin 0.2
+
+set multiplot layout 2,2
+
+set xrange [0.93:1.32]
+set xtics ("$0.95$" 0.95, "$1.1$" 1.1, "$1.2$" 1.2) offset 0,0.2
+
+set ytics 0,2.0,2.6 offset 0.5,0
+set yrange [0:2.5]
+
+set label 77 at 0.95,0.9 '\small already low'
+set arrow 77 from 1.07,1.0 to 1.095,1.34 lw 6 lc 0
+
+set xlabel '{\large $\varepsilon$ {\small [\AA]}}' offset 12,1.5
+set ylabel '{\small DBI [-]}' offset 2.0,-0.2,0
+
+set key at 1.325,1.0 spacing 0.8
+
+p 'benzene-CA.dat' u 2:($1==7?$4:NaN) w lp lw 5 pt 11 ps 1.2 lc rgb "#FF0080" t "{\\small k=7 \\hskip 0.1cm}", \
+  'benzene-CA.dat' u 2:($1==6?$4:NaN) w lp lw 5 pt 2  ps 1.0 lc rgb "#3EA44D" t "{\\small k=6 \\hskip 0.1cm}", \
+  'benzene-CA.dat' u 2:($1==5?$4:NaN) w lp lw 5 pt 7  ps 1.0 lc rgb "#E26E46" t "{\\small k=5 \\hskip 0.1cm}", \
+  'benzene-CA.dat' u 2:($1==4?$4:NaN) w lp lw 5 pt 5  ps 1.0 lc rgb "#009BFA" t "{\\small k=4 \\hskip 0.1cm}", \
+
+unset title
+unset yrange
+unset ytics
+unset label
+unset arrow
+set rmargin at screen 0.98
+
+set lmargin 1.5
+
+set yrange [0:4300]
+set ytics 130,3893,4000 offset 0.5,0
+
+set arrow 66 from 1.04,3750 to 1.09,3950 lw 6 lc 0
+set label 66 at 0.94,3500 '\small already high'
+
+set ylabel '\small pSF [-]' offset 5,-0.2
+
+p 'benzene-CA.dat' u 2:($1==7?$5:NaN) w lp lw 5 pt 11 ps 1.2 lc rgb "#FF0080" t "", \
+  'benzene-CA.dat' u 2:($1==6?$5:NaN) w lp lw 5 pt 2  ps 1.0 lc rgb "#3EA44D" t "", \
+  'benzene-CA.dat' u 2:($1==5?$5:NaN) w lp lw 5 pt 7  ps 1.0 lc rgb "#E26E46" t "", \
+  'benzene-CA.dat' u 2:($1==4?$5:NaN) w lp lw 5 pt 5  ps 1.0 lc rgb "#009BFA" t "", \
+
+unset yrange
+unset ytics
+unset arrow
+unset label 1
+unset rmargin
+
+set format y '%g\%%'
+
+set ytics 0,100,100 offset 0.5
+set yrange [0:100]
+
+set ylabel '\small Noise [\%]' offset 6,0
+
+set arrow 2 from 1.125,45 to 1.105,11 lw 6 lc 0
+set label 2 at 1.09,60 '\shortstack{\small\textcolor{black}{no noise frames} \\ \small with \textcolor{juliablue}{k=4}}'
+
+p 'benzene-CA.dat' u 2:($1==7?($7/10400)*100:NaN) w lp lw 5 pt 11 ps 1.2 lc rgb "#FF0080" t "", \
+  'benzene-CA.dat' u 2:($1==6?($7/10400)*100:NaN) w lp lw 5 pt 2  ps 1.0 lc rgb "#3EA44D" t "", \
+  'benzene-CA.dat' u 2:($1==5?($7/10400)*100:NaN) w lp lw 5 pt 7  ps 1.0 lc rgb "#E26E46" t "", \
+  'benzene-CA.dat' u 2:($1==4?($7/10400)*100:NaN) w lp lw 5 pt 5  ps 1.0 lc rgb "#009BFA" t "", \
+
+unset title
+unset yrange
+unset ytics
+unset arrow
+unset label
+unset format y
+set rmargin at screen 0.98
+
+set yrange [0:335]
+set ytics 0,300,300 offset 0.5,0
+
+set ylabel '\small Clusters [-]' offset 4,0
+
+set arrow 3 from 1.13,90 to 1.10,28 lw 6 lc 0
+set label 3 at 1.12,130 '\shortstack{\small\textcolor{black}{3 clusters} \\ \small with \textcolor{juliablue}{k=4}}'
+
+
+p 'benzene-CA.dat' u 2:($1==7?$3:NaN) w lp lw 5 pt 11 ps 1.2 lc rgb "#FF0080" t "", \
+  'benzene-CA.dat' u 2:($1==6?$3:NaN) w lp lw 5 pt 2  ps 1.0 lc rgb "#3EA44D" t "", \
+  'benzene-CA.dat' u 2:($1==5?$3:NaN) w lp lw 5 pt 7  ps 1.0 lc rgb "#E26E46" t "", \
+  'benzene-CA.dat' u 2:($1==4?$3:NaN) w lp lw 5 pt 5  ps 1.0 lc rgb "#009BFA" t "", \
+
+unset multiplot
+
+set output
+!sed -i 's|{benzene_clustering_ca}|{../benzene_clustering_ca}|' benzene_clustering_ca.tex
+!epstopdf benzene_clustering_ca.eps --outfile='benzene_clustering_ca.pdf'
+!rm -f benzene_clustering_ca.eps
